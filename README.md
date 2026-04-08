@@ -249,7 +249,12 @@ return top 5 year with highest avg content release!
         )
     WHERE genre = 'Documentaries'
 ```
-
+**Alternate_Solution**
+```sql
+    SELECT * 
+    FROM netflix_data
+    WHERE listed_in LIKE '%Documentaries';
+``` 
 **Objective:** Retrieve all movies classified as documentaries.
 
 ### 12. Find All Content Without a Director
