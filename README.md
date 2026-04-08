@@ -77,7 +77,29 @@ CREATE TABLE IF NOT EXISTS netflix_data
 SELECT type, rating FROM rank_1
 WHERE rank_movie = 1 OR rank_tv_shows =1
 ```
+**Alternate_Solution**
+```sql
+    WITH ranks AS 
+            (
+            SELECT
+                type,
+                rating,
+                count_rating,
+                DENSE_RANK() OVER(PARTITION BY type ORDER BY count_rating DESC) AS rank_per_ratings
+            FROM 
+                (
+                    SELECT 
+                        type,
+                        rating,
+                        COUNT(*) AS count_rating
+                    FROM netflix_data
+                    GROUP BY 1,2
+                    ORDER BY count_rating DESC
+                )
+            )
 
+    SELECT * FROM ranks WHERE rank_per_ratings = 1 
+```
 **Objective:** Identify the most frequently occurring rating for each type of content.
 
 ### 3. List All Movies Released in a Specific Year (e.g., 2020)
